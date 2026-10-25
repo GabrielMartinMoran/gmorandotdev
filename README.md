@@ -23,7 +23,9 @@ GitHub Actions compila y publica el sitio en GitHub Pages cada vez que se actual
 
 En **GitHub → Settings → Pages**, elegí **GitHub Actions** como fuente de publicación y agregá `gmoran.dev` como dominio personalizado. Activá **Enforce HTTPS** cuando GitHub termine de emitir el certificado.
 
-En Cloudflare DNS, creá estos registros con proxy desactivado (**DNS only**):
+Cloudflare aplana automáticamente los CNAME en el dominio raíz. Podés apuntar `@` con un CNAME a `GabrielMartinMoran.github.io` y usar otro CNAME para `www`; no mezcles el CNAME de `@` con registros A o AAAA en ese mismo nombre. Dejá el proxy desactivado (**DNS only**) mientras GitHub valida el dominio y emite el certificado.
+
+GitHub documenta esta configuración con registros A y AAAA para el dominio raíz, y CNAME para `www`:
 
 | Tipo | Nombre | Valor |
 | --- | --- | --- |
