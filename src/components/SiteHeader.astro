@@ -1,0 +1,23 @@
+---
+import BrandMark from './BrandMark.astro';
+---
+
+<header class="site-header wrap">
+  <a class="wordmark" href="/" aria-label="Gabriel Martín Moran, home" data-i18n-aria="brand.homeLabel">
+    <span class="wordmark-mark"><BrandMark /></span>
+    <span>GABRIEL MARTÍN MORAN</span>
+  </a>
+  <nav aria-label="Primary navigation" data-i18n-aria="nav.label">
+    <a href="/#proyectos"><span data-i18n="nav.projects">Projects</span></a>
+    <a href="/#skills"><span data-i18n="nav.skills">Skills</span></a>
+    <a href="/#sobre-mi"><span data-i18n="nav.about">About</span></a>
+    <a class="nav-github" href="https://github.com/GabrielMartinMoran" target="_blank" rel="noreferrer">
+      GitHub <span aria-hidden="true">↗</span>
+    </a>
+    <div class="language-switch" role="group" aria-label="Choose language" data-i18n-aria="locale.label">
+      <button type="button" data-set-locale="en" aria-label="English" aria-pressed="true">EN</button>
+      <span aria-hidden="true">/</span>
+      <button type="button" data-set-locale="es" aria-label="Español" aria-pressed="false">ES</button>
+    </div>
+  </nav>
+</header>

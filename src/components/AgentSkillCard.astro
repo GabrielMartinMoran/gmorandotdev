@@ -1,0 +1,26 @@
+---
+import { agentSkills, skillInstallCommand } from '../data/agent-skills';
+
+type Skill = (typeof agentSkills)[number];
+const { skill, index } = Astro.props as { skill: Skill; index: number };
+const installCommand = skillInstallCommand(skill.slug);
+const skillUrl = `https://github.com/GabrielMartinMoran/skills/tree/main/skills/${skill.slug}`;
+---
+
+<article class="skill-card">
+  <div class="skill-card-top">
+    <span class="card-number">{String(index + 1).padStart(2, '0')} / <span data-i18n="skills.cardType">AGENT SKILL</span></span>
+    <a class="skill-repo-link" href={skillUrl} target="_blank" rel="noreferrer" aria-label="Open skill on GitHub" data-i18n-aria="skills.open">↗</a>
+  </div>
+  <h3>{skill.name}</h3>
+  <p data-i18n={`agentSkills.${skill.slug}.description`}>{skill.description.en}</p>
+  <div class="skill-install">
+    <div class="skill-install-head">
+      <span class="skill-install-label" data-i18n="skills.installLabel">INSTALL WITH</span>
+      <button class="copy-command" type="button" data-copy-command={installCommand} aria-label="Copy install command" data-i18n-aria="skills.copyAria">
+        <span data-copy-label aria-live="polite" data-i18n="skills.copyCommand">COPY COMMAND</span>
+      </button>
+    </div>
+    <code>{installCommand}</code>
+  </div>
+</article>

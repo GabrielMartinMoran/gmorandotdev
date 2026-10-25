@@ -1,0 +1,72 @@
+---
+import BrandMark from './BrandMark.astro';
+---
+
+<div class="hero-art" aria-hidden="true">
+  <svg class="cosmic-field" viewBox="0 0 560 480" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
+    <defs>
+      <radialGradient id="cosmic-nebula" cx="0" cy="0" r="1" gradientTransform="translate(280 240) rotate(90) scale(220 250)" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#6638A6" stop-opacity=".25" />
+        <stop offset=".48" stop-color="#55308D" stop-opacity=".11" />
+        <stop offset="1" stop-color="#55308D" stop-opacity="0" />
+      </radialGradient>
+      <linearGradient id="orbit-violet" x1="74" y1="128" x2="491" y2="358" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#A875FF" stop-opacity=".08" />
+        <stop offset=".38" stop-color="#B88BFF" stop-opacity=".78" />
+        <stop offset=".72" stop-color="#8D59DC" stop-opacity=".38" />
+        <stop offset="1" stop-color="#A875FF" stop-opacity=".06" />
+      </linearGradient>
+      <linearGradient id="orbit-cyan" x1="108" y1="85" x2="453" y2="392" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#60F5DD" stop-opacity=".04" />
+        <stop offset=".44" stop-color="#60F5DD" stop-opacity=".42" />
+        <stop offset=".85" stop-color="#60F5DD" stop-opacity=".12" />
+        <stop offset="1" stop-color="#60F5DD" stop-opacity=".03" />
+      </linearGradient>
+    </defs>
+
+    <ellipse cx="280" cy="240" rx="250" ry="220" fill="url(#cosmic-nebula)" />
+
+    <g stroke-width="1">
+      <circle cx="280" cy="240" r="183" stroke="#9D70E2" stroke-opacity=".16" stroke-dasharray="2 10" class="cosmic-dash" />
+      <circle cx="280" cy="240" r="150" stroke="#A875FF" stroke-opacity=".2" />
+      <circle cx="280" cy="240" r="126" stroke="#60F5DD" stroke-opacity=".18" stroke-dasharray="1 8" />
+      <ellipse cx="280" cy="240" rx="206" ry="84" transform="rotate(-28 280 240)" stroke="url(#orbit-violet)" stroke-width="1.35" />
+      <ellipse cx="280" cy="240" rx="184" ry="140" transform="rotate(38 280 240)" stroke="url(#orbit-cyan)" stroke-width="1.1" />
+      <ellipse cx="280" cy="240" rx="228" ry="144" transform="rotate(14 280 240)" stroke="#B28DFF" stroke-opacity=".18" />
+    </g>
+
+    <g stroke="#A875FF" stroke-opacity=".33" stroke-width="1">
+      <path d="M280 35V54M280 426V445M58 240H78M482 240H502" />
+      <path d="M82 102H106V78M478 378H454V402" />
+    </g>
+
+    <g fill="#D8C7FF">
+      <circle cx="88" cy="164" r="1.25" opacity=".72" />
+      <circle cx="177" cy="64" r="1" opacity=".65" />
+      <circle cx="428" cy="72" r="1.5" opacity=".82" />
+      <circle cx="493" cy="144" r="1" opacity=".6" />
+      <circle cx="471" cy="360" r="1.5" opacity=".75" />
+      <circle cx="109" cy="380" r="1.1" opacity=".65" />
+      <circle cx="205" cy="413" r="1" opacity=".55" />
+      <circle cx="377" cy="427" r="1.1" opacity=".7" />
+    </g>
+    <g stroke="#DFCEFF" stroke-linecap="round" opacity=".8">
+      <path d="M133 113V124M127.5 118.5H138.5" class="cosmic-star" />
+      <path d="M445 319V331M439 325H451" class="cosmic-star cosmic-star-late" />
+      <path d="M402 109V117M398 113H406" />
+    </g>
+
+    <g>
+      <circle cx="456" cy="192" r="12" fill="#11101C" stroke="#A875FF" stroke-opacity=".75" />
+      <circle cx="456" cy="192" r="3.4" fill="#C19BFF" />
+      <circle cx="111.3" cy="200" r="10" fill="#0E151B" stroke="#60F5DD" stroke-opacity=".7" />
+      <circle cx="111.3" cy="200" r="3" fill="#60F5DD" />
+      <circle cx="396.7" cy="334.3" r="7" fill="#15101F" stroke="#A875FF" stroke-opacity=".65" />
+      <circle cx="396.7" cy="334.3" r="1.8" fill="#C19BFF" />
+      <circle cx="164" cy="344" r="3.2" fill="#60F5DD" opacity=".8" />
+    </g>
+  </svg>
+  <div class="hero-emblem"><BrandMark /></div>
+  <span class="art-label label-top" data-i18n="hero.artLabelTop">IDEA → SYSTEM</span>
+  <span class="art-label label-bottom" data-i18n="hero.artLabelBottom">BUILT IN THE OPEN</span>
+</div>
