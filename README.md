@@ -19,7 +19,7 @@ npm run build
 
 ## Publicación
 
-GitHub Actions compila y publica el sitio en GitHub Pages cada vez que se actualiza `main`, incluido el merge de un pull request. El workflow está en `.github/workflows/deploy.yml`.
+GitHub Actions compila y publica el sitio en GitHub Pages cada vez que se actualiza `main`, incluido el merge de un pull request. También se puede ejecutar manualmente desde **Actions**. El workflow está en `.github/workflows/deploy.yml`.
 
 En **GitHub → Settings → Pages**, elegí **GitHub Actions** como fuente de publicación y agregá `gmoran.dev` como dominio personalizado. Activá **Enforce HTTPS** cuando GitHub termine de emitir el certificado.
 
