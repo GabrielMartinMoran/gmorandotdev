@@ -19,20 +19,23 @@ npm run build
 
 ## Publicación
 
-GitHub Actions compila el sitio y lo publica en Cloudflare Pages cada vez que se actualiza `main`, incluido el merge de un pull request. El workflow está en `.github/workflows/deploy.yml`.
+GitHub Actions compila y publica el sitio en GitHub Pages cada vez que se actualiza `main`, incluido el merge de un pull request. El workflow está en `.github/workflows/deploy.yml`.
 
-La primera publicación requiere un proyecto de Cloudflare Pages llamado `gmoran-dev`, con `main` como rama de producción. Crealo con Wrangler:
+En **GitHub → Settings → Pages**, elegí **GitHub Actions** como fuente de publicación y agregá `gmoran.dev` como dominio personalizado. Activá **Enforce HTTPS** cuando GitHub termine de emitir el certificado.
 
-```sh
-npx wrangler pages project create gmoran-dev --production-branch main
-```
+En Cloudflare DNS, creá estos registros con proxy desactivado (**DNS only**):
 
-Agregá estos secretos en **GitHub → Settings → Secrets and variables → Actions**:
-
-- `CLOUDFLARE_ACCOUNT_ID`: el ID de tu cuenta de Cloudflare.
-- `CLOUDFLARE_API_TOKEN`: un token con permiso **Account → Cloudflare Pages → Edit**.
-
-Después de la primera publicación, agregá `gmoran.dev` en **Cloudflare → Workers & Pages → gmoran-dev → Custom domains**. El dominio raíz debe estar activo en Cloudflare DNS; al vincularlo desde Pages, Cloudflare configura el registro necesario.
+| Tipo | Nombre | Valor |
+| --- | --- | --- |
+| A | `@` | `185.199.108.153` |
+| A | `@` | `185.199.109.153` |
+| A | `@` | `185.199.110.153` |
+| A | `@` | `185.199.111.153` |
+| AAAA | `@` | `2606:50c0:8000::153` |
+| AAAA | `@` | `2606:50c0:8001::153` |
+| AAAA | `@` | `2606:50c0:8002::153` |
+| AAAA | `@` | `2606:50c0:8003::153` |
+| CNAME | `www` | `GabrielMartinMoran.github.io` |
 
 ## Agregar un proyecto
 
