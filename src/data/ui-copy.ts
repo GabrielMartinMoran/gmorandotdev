@@ -1,5 +1,8 @@
 export type Locale = 'en' | 'es';
 
+import { projects } from './projects';
+import { agentSkills } from './agent-skills';
+
 export const uiCopy: Record<Locale, Record<string, string>> = {
   en: {
     'nav.label': 'Primary navigation',
@@ -60,11 +63,19 @@ export const uiCopy: Record<Locale, Record<string, string>> = {
     'project.next': 'NEXT PROJECT',
     'project.all': '← All projects',
     'project.top': 'BACK TO TOP',
+    'project.approach': 'HOW IT WORKS',
+    'project.capabilities': 'DESIGN NOTES',
+    'project.install': 'TRY IT YOURSELF',
+    'project.requirements': 'REQUIREMENTS',
+    'project.source': 'SOURCE REPOSITORY',
+    'project.repoLink': 'Read the source and full documentation',
+    'project.homeCrumb': 'ENGINEERING PROJECTS',
   },
   es: {
     'nav.label': 'Navegación principal',
     'locale.label': 'Elegir idioma',
     'home.title': 'Ingeniería en abierto',
+    'home.titleTag': 'Ingeniería en abierto — Gabriel Martín Moran',
     'home.titleTag': 'Ingeniería en abierto — Gabriel Martín Moran',
     'home.description': 'Proyectos de ingeniería open source de Gabriel Martín Moran: memoria para flujos de IA, orquestación de agentes e ingeniería de software.',
     'nav.projects': 'Proyectos',
@@ -120,5 +131,53 @@ export const uiCopy: Record<Locale, Record<string, string>> = {
     'project.next': 'SIGUIENTE PROYECTO',
     'project.all': '← Todos los proyectos',
     'project.top': 'VOLVER ARRIBA',
+    'project.approach': 'CÓMO FUNCIONA',
+    'project.capabilities': 'DECISIONES DE DISEÑO',
+    'project.install': 'PROBALO',
+    'project.requirements': 'REQUISITOS',
+    'project.source': 'REPOSITORIO FUENTE',
+    'project.repoLink': 'Ver el código y la documentación completa',
+    'project.homeCrumb': 'PROYECTOS DE INGENIERÍA',
   },
 };
+
+function resolveObjectCopy(value: unknown, locale: Locale, path: string[]): unknown {
+  let current = value;
+  for (const segment of path) {
+    if (Array.isArray(current)) current = current[Number(segment)];
+    else if (typeof current === 'object' && current !== null) {
+      current = (current as Record<string, unknown>)[segment];
+    } else return undefined;
+  }
+
+  if (typeof current === 'object' && current !== null && locale in current) {
+    return (current as Record<Locale, unknown>)[locale];
+  }
+  return current;
+}
+
+export function calculateAge(date = new Date()): number {
+  const birthday = new Date(date.getFullYear(), 4, 22);
+  return date.getFullYear() - 1995 - Number(date < birthday);
+}
+
+export function getCopy(locale: Locale, key: string): string | undefined {
+  let value: unknown = uiCopy[locale][key];
+
+  if (typeof value === 'undefined') {
+    const [namespace, slug, ...path] = key.split('.');
+    if (namespace === 'projects') {
+      const project = projects.find((item) => item.slug === slug);
+      if (project) {
+        value = path[0] === 'titleTag'
+          ? project.seoTitle[locale]
+          : resolveObjectCopy(project, locale, path);
+      }
+    } else if (namespace === 'skills') {
+      const skill = agentSkills.find((item) => item.slug === slug);
+      if (skill) value = resolveObjectCopy(skill, locale, path);
+    }
+  }
+
+  return typeof value === 'string' ? value.replaceAll('{age}', String(calculateAge())) : undefined;
+}

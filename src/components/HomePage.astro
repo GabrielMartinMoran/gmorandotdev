@@ -1,0 +1,95 @@
+---
+import SiteHeader from './SiteHeader.astro';
+import ProjectCard from './ProjectCard.astro';
+import AgentSkillCard from './AgentSkillCard.astro';
+import BrandMark from './BrandMark.astro';
+import CosmicArt from './CosmicArt.astro';
+import { projects } from '../data/projects';
+import { agentSkills, agentSkillsRepository } from '../data/agent-skills';
+import { getCopy, type Locale } from '../data/ui-copy';
+
+interface Props {
+  locale: Locale | 'auto';
+  localeUrls: { en: string; es: string };
+}
+
+const { locale, localeUrls } = Astro.props;
+const pageLocale: Locale = locale === 'es' ? 'es' : 'en';
+const homePath = localeUrls[pageLocale];
+const copy = (key: string) => getCopy(pageLocale, key) ?? key;
+---
+
+<div class="site-shell">
+  <SiteHeader locale={locale} localeUrls={localeUrls} homeUrls={{ en: '/', es: '/es/' }} />
+  <main>
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="hero-kicker"><span class="live-dot"></span> <span data-i18n="hero.kicker">{copy('hero.kicker')}</span></p>
+        <h1 id="hero-title" data-i18n-html="hero.title" set:html={copy('hero.title')}></h1>
+        <p class="hero-intro" data-i18n="hero.description">{copy('hero.description')}</p>
+        <a class="hero-link" href={`${homePath}#proyectos`}><span data-i18n="hero.link">{copy('hero.link')}</span> <span aria-hidden="true">↓</span></a>
+      </div>
+      <CosmicArt />
+      <div class="hero-index"><span>01 — 02</span><span data-i18n="hero.scroll">{copy('hero.scroll')}</span></div>
+    </section>
+
+    <section class="projects-section" id="proyectos" aria-labelledby="projects-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow" data-i18n="projects.eyebrow">{copy('projects.eyebrow')}</p>
+            <h2 id="projects-title" data-i18n-html="projects.title" set:html={copy('projects.title')}></h2>
+          </div>
+          <p class="section-aside" data-i18n-html="projects.aside" set:html={copy('projects.aside')}></p>
+        </div>
+        <div class="project-grid">
+          {projects.map((project) => <ProjectCard project={project} locale={pageLocale} />)}
+        </div>
+        <div class="projects-foot"><span data-i18n="projects.footerStatus">{copy('projects.footerStatus')}</span><span><span data-i18n="projects.footerCount">{copy('projects.footerCount')}</span> <i>✳</i></span></div>
+      </div>
+    </section>
+
+    <section class="skills-section" id="skills" aria-labelledby="skills-title">
+      <div class="wrap">
+        <div class="section-heading skills-heading">
+          <div>
+            <p class="eyebrow" data-i18n="skills.eyebrow">{copy('skills.eyebrow')}</p>
+            <h2 id="skills-title" data-i18n-html="skills.title" set:html={copy('skills.title')}></h2>
+          </div>
+          <div class="skills-intro">
+            <p data-i18n="skills.description">{copy('skills.description')}</p>
+            <a class="text-link" href={agentSkillsRepository} target="_blank" rel="noreferrer"><span data-i18n="skills.repoLink">{copy('skills.repoLink')}</span> <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+        <div class="skill-grid">
+          {agentSkills.map((skill, index) => <AgentSkillCard skill={skill} index={index} locale={pageLocale} />)}
+        </div>
+        <div class="projects-foot"><span>npx skills add</span><span data-i18n="skills.count">{copy('skills.count')}</span></div>
+      </div>
+    </section>
+
+    <section class="about-section wrap" id="sobre-mi" aria-labelledby="about-title">
+      <div class="about-side">
+        <p class="eyebrow" data-i18n="about.eyebrow">{copy('about.eyebrow')}</p>
+        <span class="about-number" data-i18n="about.meta">{copy('about.meta')}</span>
+      </div>
+      <div class="about-copy">
+        <h2 id="about-title" data-i18n-html="about.title" set:html={copy('about.title')}></h2>
+        <p data-i18n="about.body">{copy('about.body')}</p>
+        <div class="profile-links">
+          <a class="text-link" href="https://github.com/GabrielMartinMoran" target="_blank" rel="noreferrer"><span data-i18n="about.link">{copy('about.link')}</span> <span aria-hidden="true">↗</span></a>
+          <a class="text-link" href="https://www.linkedin.com/in/gabriel-mart%C3%ADn-moran-a8220b125" target="_blank" rel="noreferrer"><span data-i18n="about.linkedin">{copy('about.linkedin')}</span> <span aria-hidden="true">↗</span></a>
+          <a class="text-link" href="https://x.com/Gabriel_M_Moran" target="_blank" rel="noreferrer"><span data-i18n="about.x">{copy('about.x')}</span> <span aria-hidden="true">↗</span></a>
+          <a class="text-link" href="https://www.reddit.com/user/GabrielMartinMoran/" target="_blank" rel="noreferrer"><span data-i18n="about.reddit">{copy('about.reddit')}</span> <span aria-hidden="true">↗</span></a>
+          <a class="text-link" href="mailto:moran.gabriel.95@gmail.com"><span>moran.gabriel.95@gmail.com</span> <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <div class="about-stamp" aria-hidden="true"><span>GM / DEV<br /><b>NOTES</b></span><i>✳</i></div>
+    </section>
+  </main>
+  <footer class="site-footer wrap">
+    <a class="wordmark" href={homePath} aria-label={copy('brand.backLabel')} data-i18n-aria="brand.backLabel"><span class="wordmark-mark"><BrandMark /></span><span>GABRIEL MARTÍN MORAN</span></a>
+    <span data-i18n="footer.meta">{copy('footer.meta')}</span>
+    <a href={`${homePath}#hero-title`}><span data-i18n="footer.top">{copy('footer.top')}</span> ↑</a>
+  </footer>
+</div>

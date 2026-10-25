@@ -1,0 +1,128 @@
+---
+import SiteHeader from './SiteHeader.astro';
+import BrandMark from './BrandMark.astro';
+import { getCopy, type Locale } from '../data/ui-copy';
+import { getLocaleUrls } from '../data/seo';
+import type { Project } from '../data/projects';
+
+interface Props {
+  project: Project;
+  nextProject: Project;
+  locale: Locale;
+}
+
+const { project, nextProject, locale } = Astro.props;
+const projectUrls = getLocaleUrls(`projects/${project.slug}`);
+const homeUrl = locale === 'es' ? '/es/' : '/';
+const projectsUrl = `${homeUrl}#proyectos`;
+const nextProjectUrl = `${locale === 'es' ? '/es' : ''}/projects/${nextProject.slug}/`;
+const copy = (key: string) => getCopy(locale, key) ?? key;
+---
+
+<div class={`site-shell project-page ${project.accent}`}>
+  <SiteHeader locale={locale} localeUrls={projectUrls} homeUrls={{ en: '/', es: '/es/' }} />
+  <main>
+    <nav class="wrap project-breadcrumb" aria-label={locale === 'es' ? 'Ruta de navegación' : 'Breadcrumb'}>
+      <a href={homeUrl}>{locale === 'es' ? 'INICIO' : 'HOME'}</a>
+      <span aria-hidden="true">/</span>
+      <a href={projectsUrl}>{copy('project.breadcrumbProjects')}</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{project.name}</span>
+    </nav>
+    <section class="project-hero wrap" aria-labelledby="project-title">
+      <div class="project-title-block">
+        <p class="hero-kicker"><span class="live-dot"></span> <span data-i18n={`projects.${project.slug}.eyebrow`}>{project.eyebrow[locale]}</span></p>
+        <h1 id="project-title">{project.name}<span class="title-period">.</span></h1>
+        <p class="project-lede" data-i18n={`projects.${project.slug}.summary`}>{project.summary[locale]}</p>
+        <div class="project-actions">
+          <a class="button button-dark" href={project.url} target="_blank" rel="noreferrer"><span data-i18n="project.github">{copy('project.github')}</span> <span aria-hidden="true">↗</span></a>
+          <a class="text-link" href="#overview"><span data-i18n="project.read">{copy('project.read')}</span> <span aria-hidden="true">↓</span></a>
+        </div>
+      </div>
+      <div class="project-graphic" aria-hidden="true">
+        <div class="graphic-grid"></div>
+        <div class="graphic-ring ring-large"></div>
+        <div class="graphic-ring ring-small"></div>
+        <span class="graphic-mark">{project.mark}</span>
+        <span class="graphic-caption">{project.number} / <span data-i18n="project.graphicCaption">{copy('project.graphicCaption')}</span></span>
+        <i class="graphic-dot dot-one"></i><i class="graphic-dot dot-two"></i><i class="graphic-dot dot-three"></i>
+      </div>
+    </section>
+
+    <section class="project-overview" id="overview" aria-labelledby="overview-title">
+      <div class="wrap overview-layout">
+        <div class="overview-label"><p class="eyebrow" data-i18n="project.section">{copy('project.section')}</p><span>{project.number} — <span data-i18n="project.detailsSuffix">{copy('project.detailsSuffix')}</span></span></div>
+        <div class="overview-main">
+          <h2 id="overview-title" data-i18n-html="project.heading" set:html={copy('project.heading')}></h2>
+          <p class="overview-description" data-i18n={`projects.${project.slug}.description`}>{project.description[locale]}</p>
+          <div class="detail-grid">
+            {project.details.map((detail, index) => (
+              <article class="detail-item">
+                <span class="detail-index">0{index + 1}</span>
+                <h3 data-i18n={`projects.${project.slug}.details.${index}.title`}>{detail.title[locale]}</h3>
+                <p data-i18n={`projects.${project.slug}.details.${index}.text`}>{detail.text[locale]}</p>
+              </article>
+            ))}
+          </div>
+          <div class="stack-row"><span class="eyebrow" data-i18n="project.technologyLabel">{copy('project.technologyLabel')}</span><div>{project.stack.map((item) => <span class="stack-chip">{item}</span>)}</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="project-chapters wrap" aria-label={copy('project.capabilities')}>
+      <div class="chapters-heading">
+        <p class="eyebrow" data-i18n="project.capabilities">{copy('project.capabilities')}</p>
+      </div>
+      {project.chapters.map((chapter, index) => (
+        <article class="project-chapter">
+          <div class="chapter-content">
+            <h2 data-i18n={`projects.${project.slug}.chapters.${index}.title`}>{chapter.title[locale]}</h2>
+            <p data-i18n={`projects.${project.slug}.chapters.${index}.text`}>{chapter.text[locale]}</p>
+            <ul>
+              {chapter.points.map((point, pointIndex) => <li data-i18n={`projects.${project.slug}.chapters.${index}.points.${pointIndex}`}>{point[locale]}</li>)}
+            </ul>
+          </div>
+        </article>
+      ))}
+    </section>
+
+    <section class="project-install" aria-labelledby="install-title">
+      <div class="wrap install-layout">
+        <div class="install-intro">
+          <p class="eyebrow" data-i18n="project.install">{copy('project.install')}</p>
+          <h2 id="install-title" data-i18n={`projects.${project.slug}.quickStart.title`}>{project.quickStart.title[locale]}</h2>
+          <p data-i18n={`projects.${project.slug}.quickStart.intro`}>{project.quickStart.intro[locale]}</p>
+          <h3 data-i18n="project.requirements">{copy('project.requirements')}</h3>
+          <ul>{project.quickStart.requirements.map((requirement, index) => <li data-i18n={`projects.${project.slug}.quickStart.requirements.${index}`}>{requirement[locale]}</li>)}</ul>
+        </div>
+        <div class="install-commands">
+          {project.quickStart.commands.map((command, index) => (
+            <div class="command-block">
+              <h3 data-i18n={`projects.${project.slug}.quickStart.commands.${index}.label`}>{command.label[locale]}</h3>
+              <pre><code>{command.value}</code></pre>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="project-repository wrap">
+      <div>
+        <p class="eyebrow" data-i18n="project.source">{copy('project.source')}</p>
+        <h2>{project.name}</h2>
+        <p data-i18n="project.repoLink">{copy('project.repoLink')}</p>
+      </div>
+      <a class="button button-dark" href={project.url} target="_blank" rel="noreferrer"><span data-i18n="project.github">{copy('project.github')}</span> <span aria-hidden="true">↗</span></a>
+    </section>
+
+    <section class="project-next wrap">
+      <div><p class="eyebrow" data-i18n="project.next">{copy('project.next')}</p><a href={nextProjectUrl}><span class="next-name">{nextProject.name}</span><span class="next-arrow">↗</span></a></div>
+      <a class="back-link" href={projectsUrl} data-i18n="project.all">{copy('project.all')}</a>
+    </section>
+  </main>
+  <footer class="site-footer wrap">
+    <a class="wordmark" href={homeUrl} aria-label={copy('brand.backLabel')} data-i18n-aria="brand.backLabel"><span class="wordmark-mark"><BrandMark /></span><span>GABRIEL MARTÍN MORAN</span></a>
+    <span data-i18n="footer.meta">{copy('footer.meta')}</span>
+    <a href="#overview"><span data-i18n="project.top">{copy('project.top')}</span> ↑</a>
+  </footer>
+</div>

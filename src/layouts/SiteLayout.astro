@@ -1,32 +1,62 @@
 ---
 import '../styles/global.css';
+import type { Locale } from '../data/ui-copy';
 
 interface Props {
   title: string;
   description: string;
-  titleKey: string;
-  descriptionKey: string;
+  titleKey?: string;
+  descriptionKey?: string;
+  locale?: Locale | 'auto';
+  alternateUrls?: { en: string; es: string };
+  structuredData?: Record<string, unknown>;
 }
 
-const { title, description, titleKey, descriptionKey } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site);
+const {
+  title,
+  description,
+  titleKey,
+  descriptionKey,
+  locale = 'auto',
+  alternateUrls = { en: '/', es: '/es/' },
+  structuredData,
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const absoluteAlternates = {
+  en: new URL(alternateUrls.en, Astro.site).href,
+  es: new URL(alternateUrls.es, Astro.site).href,
+};
+const pageLanguage = locale === 'es' ? 'es-AR' : 'en';
+const jsonLd = structuredData ? JSON.stringify(structuredData).replaceAll('<', '\\u003c') : undefined;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={pageLanguage} data-route-locale={locale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} data-i18n-content={descriptionKey} />
     <meta name="theme-color" content="#08070d" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content={`${title} — Gabriel Martín Moran`} data-i18n-content={titleKey} />
+    <meta property="og:site_name" content="Gabriel Martín Moran" />
+    <meta property="og:title" content={title} data-i18n-content={titleKey} />
     <meta property="og:description" content={description} data-i18n-content={descriptionKey} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={locale === 'es' ? 'es_AR' : 'en_US'} />
+    <meta property="og:locale:alternate" content={locale === 'es' ? 'en_US' : 'es_AR'} />
     <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} data-i18n-content={titleKey} />
+    <meta name="twitter:description" content={description} data-i18n-content={descriptionKey} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonical} />
-    <title data-i18n={titleKey}>{title} — Gabriel Martín Moran</title>
+    <link rel="alternate" hreflang="en" href={absoluteAlternates.en} />
+    <link rel="alternate" hreflang="es-AR" href={absoluteAlternates.es} />
+    <link rel="alternate" hreflang="x-default" href={absoluteAlternates.en} />
+    <title data-i18n={titleKey}>{title}</title>
+    {jsonLd && <script type="application/ld+json" set:html={jsonLd}></script>}
   </head>
   <body>
     <slot />

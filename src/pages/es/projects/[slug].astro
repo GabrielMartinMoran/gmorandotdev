@@ -1,0 +1,28 @@
+---
+import SiteLayout from '../../../layouts/SiteLayout.astro';
+import ProjectDetail from '../../../components/ProjectDetail.astro';
+import { projects } from '../../../data/projects';
+import { getCanonical, getLocaleUrls, getProjectStructuredData } from '../../../data/seo';
+
+export function getStaticPaths() {
+  return projects.map((project) => ({ params: { slug: project.slug }, props: { project } }));
+}
+
+const { project } = Astro.props;
+const nextProject = projects[(projects.findIndex((item) => item.slug === project.slug) + 1) % projects.length];
+const localeUrls = getLocaleUrls(`projects/${project.slug}`);
+const canonical = getCanonical(localeUrls.es);
+const structuredData = getProjectStructuredData(project, 'es', canonical);
+---
+
+<SiteLayout
+  title={project.seoTitle.es}
+  description={project.seoDescription.es}
+  titleKey={`projects.${project.slug}.titleTag`}
+  descriptionKey={`projects.${project.slug}.seoDescription`}
+  locale="es"
+  alternateUrls={localeUrls}
+  structuredData={structuredData}
+>
+  <ProjectDetail project={project} nextProject={nextProject} locale="es" />
+</SiteLayout>

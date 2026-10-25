@@ -1,23 +1,34 @@
 ---
 import BrandMark from './BrandMark.astro';
+import { getCopy, type Locale } from '../data/ui-copy';
+
+interface Props {
+  locale?: Locale | 'auto';
+  localeUrls?: { en: string; es: string };
+  homeUrls?: { en: string; es: string };
+}
+
+const { locale = 'auto', localeUrls = { en: '/', es: '/es/' }, homeUrls = { en: '/', es: '/es/' } } = Astro.props;
+const pageLocale: Locale = locale === 'es' ? 'es' : 'en';
+const homeUrl = homeUrls[pageLocale];
 ---
 
 <header class="site-header wrap">
-  <a class="wordmark" href="/" aria-label="Gabriel Martín Moran, home" data-i18n-aria="brand.homeLabel">
+  <a class="wordmark" href={homeUrl} aria-label={getCopy(pageLocale, 'brand.homeLabel')} data-i18n-aria="brand.homeLabel">
     <span class="wordmark-mark"><BrandMark /></span>
     <span>GABRIEL MARTÍN MORAN</span>
   </a>
-  <nav aria-label="Primary navigation" data-i18n-aria="nav.label">
-    <a href="/#proyectos"><span data-i18n="nav.projects">Projects</span></a>
-    <a href="/#skills"><span data-i18n="nav.skills">Skills</span></a>
-    <a href="/#sobre-mi"><span data-i18n="nav.about">About</span></a>
+  <nav aria-label={getCopy(pageLocale, 'nav.label')} data-i18n-aria="nav.label">
+    <a href={`${homeUrl}#proyectos`}><span data-i18n="nav.projects">{getCopy(pageLocale, 'nav.projects')}</span></a>
+    <a href={`${homeUrl}#skills`}><span data-i18n="nav.skills">{getCopy(pageLocale, 'nav.skills')}</span></a>
+    <a href={`${homeUrl}#sobre-mi`}><span data-i18n="nav.about">{getCopy(pageLocale, 'nav.about')}</span></a>
     <a class="nav-github" href="https://github.com/GabrielMartinMoran" target="_blank" rel="noreferrer">
       GitHub <span aria-hidden="true">↗</span>
     </a>
-    <div class="language-switch" role="group" aria-label="Choose language" data-i18n-aria="locale.label">
-      <button type="button" data-set-locale="en" aria-label="English" aria-pressed="true">EN</button>
+    <div class="language-switch" role="group" aria-label={getCopy(pageLocale, 'locale.label')} data-i18n-aria="locale.label">
+      <a href={localeUrls.en} lang="en" data-locale-link="en" aria-current={pageLocale === 'en' ? 'page' : 'false'} aria-label="English">EN</a>
       <span aria-hidden="true">/</span>
-      <button type="button" data-set-locale="es" aria-label="Español" aria-pressed="false">ES</button>
+      <a href={localeUrls.es} lang="es-AR" data-locale-link="es" aria-current={pageLocale === 'es' ? 'page' : 'false'} aria-label="Español">ES</a>
     </div>
   </nav>
 </header>

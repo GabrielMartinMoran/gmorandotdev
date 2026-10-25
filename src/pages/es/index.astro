@@ -1,0 +1,21 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import HomePage from '../../components/HomePage.astro';
+import { getCopy } from '../../data/ui-copy';
+import { getHomeStructuredData, getLocaleUrls } from '../../data/seo';
+
+const localeUrls = getLocaleUrls();
+const structuredData = getHomeStructuredData();
+---
+
+<SiteLayout
+  title={getCopy('es', 'home.titleTag')!}
+  description={getCopy('es', 'home.description')!}
+  titleKey="home.titleTag"
+  descriptionKey="home.description"
+  locale="es"
+  alternateUrls={localeUrls}
+  structuredData={structuredData}
+>
+  <HomePage locale="es" localeUrls={localeUrls} />
+</SiteLayout>
